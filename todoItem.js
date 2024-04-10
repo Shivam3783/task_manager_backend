@@ -132,6 +132,26 @@ app.patch('/api/todo/update-to-do/:_id', async (req, res) => {
   }
 });
 
+app.patch('/api/todo/update-completed/:_id', async (req, res) => {
+  try {
+    const _id = req.params._id;
+    const { isCompleted } = req.body; // Only need isCompleted from the request body
+
+    // Fetch the existing todo item from the database
+    const existingTodo = await db.get(_id);
+
+    // Update the isCompleted field based on the request body
+    existingTodo.isCompleted = isCompleted;
+
+    // Update the todo item in the database
+    const response = await db.insert(existingTodo); // Assuming db.insert updates existing records
+
+    res.status(200).json({ message: 'Todo updated successfully', data: response });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 
