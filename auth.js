@@ -5,7 +5,9 @@ const bcrypt = require('bcryptjs');
 const cors = require('cors'); // Import the cors package
 
 const app = express();
-const port = 3000;
+// const port = 3000;
+const port = process.env.PORT || 3000; // Use environment variable PORT or default to 3002
+
 
 app.use(cors()); 
 app.use(bodyParser.json());
@@ -24,6 +26,10 @@ const cloudant = Cloudant({
 
 // Create a new database or use an existing one
 const db = cloudant.db.use('todo_user_auth');
+
+app.get('/', (req, res) => {
+  res.send('auth.js backend working',port);
+});
 
 // API endpoint to handle user registration
 app.post('/register', async (req, res) => {
